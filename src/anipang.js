@@ -1,6 +1,6 @@
 var ESpecialBlockType = { "SMILE" : 10, "GHOST" : 11 }
 var EBlockState = { "STABLE" : 0, "DROPPING" : 1, "BREAKING" : 2, "CREATING" : 3, "SWAPPING" : 4, "BREAKED": 5 }
-var GameConfig = { "BLOCK_W" : 81, "BLOCK_H" : 82, "BLOCK_SPACE_X" : -15, "BLOCK_SPACE_Y" : -15, "BLOCK_SWAP_TIME" : 0.1, "DROP_SPEED" : 1000, "BLOCK_TYPE_COUNT" : 5 }
+var GameConfig = { "BLOCK_W" : 81, "BLOCK_H" : 82, "BLOCK_SPACE_X" : -15, "BLOCK_SPACE_Y" : -15, "BLOCK_SWAP_TIME" : 0.1, "DROP_SPEED" : 1000, "BLOCK_TYPE_COUNT" : 5, "DRAG_LENGTH": 20 }
 
 // ██████╗ ██╗      ██████╗  ██████╗██╗  ██╗
 // ██╔══██╗██║     ██╔═══██╗██╔════╝██║ ██╔╝
@@ -168,6 +168,14 @@ var BlockLayer = cc.Layer.extend({
                         var touch = touches[it];
 
                         if (!touch || touch.blockIndex == -1 || !blockLayer.blockList[touch.blockIndex].IsStable())
+                            continue;
+
+                        var startLoc = touch.getStartLocationInView();
+                        var curLoc = touch.getLocationInView();
+                        var tempX = curLoc.x - startLoc.x;
+                        var tempY = curLoc.y - startLoc.y;
+                        var length = Math.sqrt(tempX * tempX + tempY * tempY);
+                        if (length < GameConfig.DRAG_LENGTH)
                             continue;
 
                         blockLayer.SwapBlocks(touch);
