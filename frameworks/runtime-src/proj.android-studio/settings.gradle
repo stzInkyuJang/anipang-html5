@@ -1,4 +1,0 @@
-include ':libcocos2dx'
-project(':libcocos2dx').projectDir = new File(settingsDir, '../../cocos2d-x/cocos/platform/android/libcocos2dx')
-include ':Anipang-html5'
-project(':Anipang-html5').projectDir = new File(settingsDir, 'app')
